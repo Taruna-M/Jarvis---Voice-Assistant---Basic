@@ -3,7 +3,6 @@ import os
 import subprocess
 import re
 
-
 r = sr.Recognizer()
 mic = sr.Microphone()
 
