@@ -19,15 +19,17 @@ for app in apps:
     voice_command = 'open ' + app.split('.app')[0]
     sys_command = 'open ' + path +'/%s' %app.replace(' ','\ ')
     voice_commands[voice_command] = sys_command
-
+    
 def search_voice_commands(query):
     query_re = re.compile(re.escape(query), re.IGNORECASE)
     for voice_command, sys_command in voice_commands.items():
         if query_re.search(voice_command):
+            print(f"Jarvis: executing {sys_command}")
             return sys_command
     return None
 
 def execute_command(query):
+    print(f"User: {query}")
     if query.lower() == 'goodbye':
         say("Goodbye!")
         exit()
@@ -66,7 +68,9 @@ def activate(phrase='jarvis'):
 while True:
     try:
         if activate():
-            say("What can I do for you?")
+            prompt = "What can I do for you?"
+            say(prompt)
+            print(f"Jarvis: {prompt}\n")
             with mic as source:
                 r.adjust_for_ambient_noise(source)
                 audio = r.listen(source)
@@ -74,4 +78,3 @@ while True:
                 execute_command(transcript)
     except Exception as e:
         print(f"Error: {e}")
-
